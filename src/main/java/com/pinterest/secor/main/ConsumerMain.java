@@ -75,8 +75,11 @@ public class ConsumerMain {
                 consumer.start();
             }
             for (Consumer consumer : consumers) {
-                consumer.join();
+		consumer.join();
+		System.out.println("JOINED");
             }
+	    System.out.println("JOINING DONE");
+	    System.exit(0);
         } catch (Throwable t) {
             LOG.error("Consumer failed", t);
             System.exit(1);

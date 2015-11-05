@@ -18,7 +18,6 @@ package com.pinterest.secor.util;
 
 import com.pinterest.secor.common.SecorConfig;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.s3a.Constants;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -58,8 +57,6 @@ public class FileUtil {
                         "Must specify both aws.access.key and aws.secret.key or neither.");
                 }
                 if (!config.getAwsAccessKey().isEmpty()) {
-                    mConf.set(Constants.ACCESS_KEY, config.getAwsAccessKey());
-                    mConf.set(Constants.SECRET_KEY, config.getAwsSecretKey());
                     mConf.set("fs.s3n.awsAccessKeyId", config.getAwsAccessKey());
                     mConf.set("fs.s3n.awsSecretAccessKey", config.getAwsSecretKey());
                 }
@@ -68,7 +65,10 @@ public class FileUtil {
     }
 
     public static FileSystem getFileSystem(String path) throws IOException {
-        return FileSystem.get(URI.create(path), mConf);
+        System.out.println("Checking file: "+URI.create(path));
+        System.out.println(mConf);
+        System.out.println(FileSystem.get(URI.create(path), mConf));
+	return FileSystem.get(URI.create(path), mConf);
     }
 
     public static String getPrefix(String topic, SecorConfig config)  throws IOException {

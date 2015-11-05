@@ -56,7 +56,6 @@ public class S3UploadManager extends UploadManager {
         String endpoint = mConfig.getAwsEndpoint();
         String region = mConfig.getAwsRegion();
         AmazonS3 client;
-
         if (accessKey.isEmpty() || secretKey.isEmpty()) {
             client = new AmazonS3Client();
         } else {
@@ -68,7 +67,6 @@ public class S3UploadManager extends UploadManager {
         } else if (!region.isEmpty()) {
             client.setRegion(Region.getRegion(Regions.fromName(region)));
         }
-
         mManager = new TransferManager(client);
     }
 
