@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * LogFilePath represents path of a log file.  It contains convenience method for building and
@@ -49,6 +50,14 @@ public class LogFilePath {
     private final int mKafkaPartition;
     private final long mOffset;
     private final String mExtension;
+    private HashMap<String, String> topicNameTranslations = new HashMap<String, String>(){{
+        put("appeventqueue", "app-event");
+        put("crawleventqueue", "crawl-event");
+        put("facebookeventqueue", "facebook-event");
+        put("tageventqueue", "tag-event");
+        put("usersessioneventqueue", "fact-event");
+        put("locationeventqueue", "location-event");
+    }};
 
     public LogFilePath(String prefix, int generation, long lastCommittedOffset,
                        ParsedMessage message, String extension) {
@@ -121,7 +130,13 @@ public class LogFilePath {
     public String getLogFileParentDir() {
         ArrayList<String> elements = new ArrayList<String>();
         elements.add(mPrefix);
-        elements.add(mTopic);
+        if(topicNameTranslations.containsKey(mTopic)){
+            elements.add(topicNameTranslations.get(mTopic));    
+        }
+        else{
+            elements.add(topicNameTranslations.get(mTopic));       
+        }
+        
         return StringUtils.join(elements, "/");
     }
 
@@ -219,3 +234,4 @@ public class LogFilePath {
         return getLogFilePath();
     }
 }
+
