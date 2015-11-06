@@ -182,14 +182,10 @@ public class Consumer extends Thread {
         }
         if(failure){
             consecutiveFailures ++;
-            // System.out.println("CONSCF -->  " + consecutiveFailures);
         }
         else{
             consecutiveFailures = 0;
         }
-        // if(consecutiveFailures > 5){
-        //     return false;
-        // }
 
         return true;
     }

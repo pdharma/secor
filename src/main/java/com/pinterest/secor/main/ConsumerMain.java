@@ -75,8 +75,9 @@ public class ConsumerMain {
                 consumer.start();
             }
             for (Consumer consumer : consumers) {
-		consumer.join();
-		System.out.println("JOINED");
+		        System.out.println("JOINED");
+                consumer.join();
+                System.exit(0);
             }
 	    System.out.println("JOINING DONE");
 	    System.exit(0);

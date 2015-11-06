@@ -68,7 +68,7 @@ public class FileUtil {
         System.out.println("Checking file: "+URI.create(path));
         System.out.println(mConf);
         System.out.println(FileSystem.get(URI.create(path), mConf));
-	return FileSystem.get(URI.create(path), mConf);
+        return FileSystem.get(URI.create(path), mConf);
     }
 
     public static String getPrefix(String topic, SecorConfig config)  throws IOException {
