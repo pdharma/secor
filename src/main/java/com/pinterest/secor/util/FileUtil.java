@@ -87,7 +87,7 @@ public class FileUtil {
             }
             prefix = "swift://" + container + ".GENERICPROJECT/" + config.getSwiftPath();
         } else {
-            prefix = "s3n://" + config.getS3Bucket();
+            prefix = "s3n://" + config.getS3Bucket() + "/" + config.getS3Path();
         }
         return prefix;
     }
