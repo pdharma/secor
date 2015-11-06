@@ -3,6 +3,11 @@ package com.pinterest.secor.util;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import java.io.*; 
+import java.net.*;
+
 /**
  *
  * @author Ali Rakhshanfar
@@ -12,23 +17,25 @@ public class PGStatsClient {
     private int port;
     private String source;
 
-    private HashMap<String, double> queue;
+    private HashMap<String, Double> queue;
 
     public PGStatsClient(String host, int port){
         this.host = host;
         this.port = port;
-        this.queue = new HashMap<String, double>();
+        this.queue = new HashMap<String, Double>();
         this.source = "secor";
     }
 
     public void flush(){
         ArrayList<String> metrics = new ArrayList<String>();
-        for (Map.Entry<String, double> entry : queue.entrySet()){
+        for (Map.Entry<String, Double> entry : queue.entrySet()){
+            System.out.println("Sending "+String.format("%s:%s|c", entry.getKey(), entry.getValue()));
             metrics.add(String.format("%s:%s|c", entry.getKey(), entry.getValue()));
         }
         if(!metrics.isEmpty()){
-            pushData(StringUtils.join(metrics, "\n"))
+            pushData(StringUtils.join(metrics, "\n"));
         }
+        this.queue = new HashMap<String, Double>();
     }
     private void pushData(String data){
         try{

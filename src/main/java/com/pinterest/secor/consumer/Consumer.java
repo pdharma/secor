@@ -66,7 +66,7 @@ public class Consumer extends Thread {
 
     public Consumer(SecorConfig config) {
         mConfig = config;
-        statsClient = new PGStatsClient(conf.getStatsDHost(), config.getStatsDPort());
+        statsClient = new PGStatsClient(mConfig.getStatsDHost(), mConfig.getStatsDPort());
     }
 
     private void init() throws Exception {
@@ -179,7 +179,7 @@ public class Consumer extends Thread {
             if (parsedMessage != null) {
                 try {
                     mMessageWriter.write(parsedMessage);
-                    statsClient.pushCounter(parsedMessage.mTopic, 1);
+                    statsClient.pushCounter(parsedMessage.getTopic(), 1);
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to write message " + parsedMessage, e);
                 }

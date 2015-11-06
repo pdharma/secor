@@ -162,7 +162,7 @@ public class SecorConfig {
     }
 
     public String getS3Prefix() {
-        return getS3FileSystem() + "://" + getS3Bucket() + "/" + getS3Path();
+        return getS3FileSystem() + "://" + getS3Bucket();
     }
     public String getLocalPath() {
         return getString("secor.local.path");
@@ -337,11 +337,11 @@ public class SecorConfig {
     }
 
     public String getStatsDHost(){
-        return getString("secor.statsd.host", "localhost")
+        return getString("secor.statsd.host");
     }
 
     public int getStatsDPort(){
-        return getInt("secor.statsd.port", 8666)
+        return getInt("secor.statsd.port", 8666);
     }
     
     public boolean getBoolean(String name, boolean defaultValue) {
