@@ -173,6 +173,7 @@ public class Consumer extends Thread {
             if (parsedMessage != null) {
                 try {
                     mMessageWriter.write(parsedMessage);
+                    statsClient.pushCounter(parsedMessage.mTopic, 1);
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to write message " + parsedMessage, e);
                 }
