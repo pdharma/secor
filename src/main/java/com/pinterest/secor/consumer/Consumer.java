@@ -26,6 +26,7 @@ import com.pinterest.secor.uploader.Uploader;
 import com.pinterest.secor.uploader.UploadManager;
 import com.pinterest.secor.reader.MessageReader;
 import com.pinterest.secor.util.ReflectionUtil;
+import com.pinterest.secor.util.PGStatsClient;
 import com.pinterest.secor.writer.MessageWriter;
 
 import kafka.consumer.ConsumerTimeoutException;
@@ -35,6 +36,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.Thread;
+
+
 
 /**
  * Consumer is a top-level component coordinating reading, writing, and uploading Kafka log
@@ -59,9 +62,11 @@ public class Consumer extends Thread {
     // TODO(pawel): we should keep a count per topic partition.
     private double mUnparsableMessages;
     private int consecutiveFailures;
+    private PGStatsClient statsClient;
 
     public Consumer(SecorConfig config) {
         mConfig = config;
+        statsClient = new PGStatsClient(conf.getStatsDHost(), config.getStatsDPort());
     }
 
     private void init() throws Exception {
@@ -126,6 +131,7 @@ public class Consumer extends Thread {
     }
 
     private void checkUploadPolicy() {
+        statsClient.flush();
         try {
             mUploader.applyPolicy();
         } catch (Exception e) {
@@ -173,6 +179,7 @@ public class Consumer extends Thread {
             if (parsedMessage != null) {
                 try {
                     mMessageWriter.write(parsedMessage);
+                    statsClient.pushCounter()
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to write message " + parsedMessage, e);
                 }

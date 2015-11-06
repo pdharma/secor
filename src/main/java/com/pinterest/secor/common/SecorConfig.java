@@ -336,6 +336,14 @@ public class SecorConfig {
         return getInt("secor.gs.read.timeout.ms", 3 * 60000);
     }
 
+    public String getStatsDHost(){
+        return getString("secor.statsd.host", "localhost")
+    }
+
+    public int getStatsDPort(){
+        return getInt("secor.statsd.port", 8666)
+    }
+    
     public boolean getBoolean(String name, boolean defaultValue) {
         return mProperties.getBoolean(name, defaultValue);
     }
