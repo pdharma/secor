@@ -49,7 +49,7 @@ import java.lang.Thread;
 public class Consumer extends Thread {
     private static final Logger LOG = LoggerFactory.getLogger(Consumer.class);
 
-    private SecorConfig mConfig;
+    private SecorConfig mConfig; 
 
     private MessageReader mMessageReader;
     private MessageWriter mMessageWriter;
@@ -58,6 +58,7 @@ public class Consumer extends Thread {
     private Uploader mUploader;
     // TODO(pawel): we should keep a count per topic partition.
     private double mUnparsableMessages;
+    private int consecutiveFailures;
 
     public Consumer(SecorConfig config) {
         mConfig = config;
@@ -73,6 +74,7 @@ public class Consumer extends Thread {
         mMessageWriter = new MessageWriter(mConfig, mOffsetTracker, fileRegistry);
         mMessageParser = ReflectionUtil.createMessageParser(mConfig.getMessageParserClass(), mConfig);
         mUnparsableMessages = 0.;
+        consecutiveFailures = 0;
     }
 
     @Override
@@ -89,6 +91,14 @@ public class Consumer extends Thread {
         long checkMessagesPerSecond = mConfig.getMessagesPerSecond();
         long nMessages = 0;
         long lastChecked = System.currentTimeMillis();
+
+        long rateTimeChecked = System.currentTimeMillis();
+        double rateNMessages = 0.0;
+
+        long rateTimePeriod = 1 * 20 * 1000;
+        double minRate = 900.0;
+
+        //Modify right here
         while (true) {
             boolean hasMoreMessages = consumeNextMessage();
             if (!hasMoreMessages) {
@@ -100,6 +110,16 @@ public class Consumer extends Thread {
                     (now - lastChecked) > checkEveryNSeconds * 1000) {
                 lastChecked = now;
                 checkUploadPolicy();
+            }
+            rateNMessages++;
+            if ((now - rateTimeChecked) > rateTimePeriod){
+                double rate = rateNMessages / (now - rateTimeChecked) * 1000;
+                System.out.println("Num messages: " + rateNMessages + " Rate: "+rate);
+                if(rate < minRate){
+                    break;
+                }
+                rateTimeChecked = now;
+                rateNMessages = 0.0;
             }
         }
         checkUploadPolicy();
@@ -116,6 +136,7 @@ public class Consumer extends Thread {
     // @return whether there are more messages left to consume
     private boolean consumeNextMessage() {
         Message rawMessage = null;
+        boolean failure = false;
         try {
             boolean hasNext = mMessageReader.hasNext();
             if (!hasNext) {
@@ -125,6 +146,7 @@ public class Consumer extends Thread {
         } catch (ConsumerTimeoutException e) {
             // We wait for a new message with a timeout to periodically apply the upload policy
             // even if no messages are delivered.
+            failure = true;
             LOG.trace("Consumer timed out", e);
         }
         if (rawMessage != null) {
@@ -155,7 +177,20 @@ public class Consumer extends Thread {
                     throw new RuntimeException("Failed to write message " + parsedMessage, e);
                 }
             }
+        } else{
+            failure = true;
         }
+        if(failure){
+            consecutiveFailures ++;
+            // System.out.println("CONSCF -->  " + consecutiveFailures);
+        }
+        else{
+            consecutiveFailures = 0;
+        }
+        // if(consecutiveFailures > 5){
+        //     return false;
+        // }
+
         return true;
     }
 

@@ -68,6 +68,9 @@ public class FileUtil {
     }
 
     public static FileSystem getFileSystem(String path) throws IOException {
+        System.out.println("Checking file: "+URI.create(path));
+        System.out.println(mConf);
+        System.out.println(FileSystem.get(URI.create(path), mConf));
         return FileSystem.get(URI.create(path), mConf);
     }
 

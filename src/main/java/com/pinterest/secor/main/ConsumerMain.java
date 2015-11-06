@@ -76,6 +76,7 @@ public class ConsumerMain {
             }
             for (Consumer consumer : consumers) {
                 consumer.join();
+                System.exit(0);
             }
         } catch (Throwable t) {
             LOG.error("Consumer failed", t);
