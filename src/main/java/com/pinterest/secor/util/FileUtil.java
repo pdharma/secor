@@ -86,10 +86,8 @@ public class FileUtil {
                 container = config.getSwiftContainer();
             }
             prefix = "swift://" + container + ".GENERICPROJECT/" + config.getSwiftPath();
-        } else if (config.getCloudService().equals("S3")) {
-            prefix = config.getS3Prefix();
-        } else if (config.getCloudService().equals("GS")) {
-            prefix = "gs://" + config.getGsBucket() + "/" + config.getGsPath();
+        } else {
+            prefix = "s3n://" + config.getS3Bucket();
         }
         return prefix;
     }

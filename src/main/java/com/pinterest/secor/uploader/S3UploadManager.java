@@ -72,7 +72,7 @@ public class S3UploadManager extends UploadManager {
 
     public Handle<?> upload(LogFilePath localPath) throws Exception {
         String s3Bucket = mConfig.getS3Bucket();
-        String s3Key = localPath.withPrefix(mConfig.getS3Path()).getLogFilePath();
+        String s3Key = localPath.getLogFilePath();
         File localFile = new File(localPath.getLogFilePath());
 
         LOG.info("uploading file {} to s3://{}/{}", localFile, s3Bucket, s3Key);
