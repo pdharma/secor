@@ -88,8 +88,8 @@ public class SequenceFileReaderWriterFactory implements FileReaderWriterFactory 
             Configuration config = new Configuration();
             Path fsPath = new Path(path.getLogFilePath());
             FileSystem fs = FileUtil.getFileSystem(path.getLogFilePath());
-	    System.out.println("SEQUENCEFILEWRITELOG -> "+fs+" : "+path.getLogFilePath());
-	    if (codec != null) {
+            System.out.println("SEQUENCEFILEWRITELOG -> "+fs+" : "+path.getLogFilePath());
+            if (codec != null) {
                 this.mWriter = SequenceFile.createWriter(fs, config, fsPath,
                         LongWritable.class, BytesWritable.class,
                         SequenceFile.CompressionType.BLOCK, codec);

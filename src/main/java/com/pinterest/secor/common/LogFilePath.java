@@ -129,12 +129,14 @@ public class LogFilePath {
 
     public String getLogFileParentDir() {
         ArrayList<String> elements = new ArrayList<String>();
-        elements.add(mPrefix);
+        if(mPrefix != null && mPrefix != ""){
+            elements.add(mPrefix);    
+        }
         if(topicNameTranslations.containsKey(mTopic)){
             elements.add(topicNameTranslations.get(mTopic));    
         }
         else{
-            elements.add(topicNameTranslations.get(mTopic));       
+            elements.add(mTopic);       
         }
         
         return StringUtils.join(elements, "/");
