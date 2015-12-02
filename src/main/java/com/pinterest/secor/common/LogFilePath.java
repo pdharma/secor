@@ -57,6 +57,8 @@ public class LogFilePath {
         put("tageventqueue", "tag-event");
         put("usersessioneventqueue", "fact-event");
         put("locationeventqueue", "location-event");
+        put("iplocationqueue", "ip-location-event");
+        put("latlonglocationqueue", "latlong-location-event");
     }};
 
     public LogFilePath(String prefix, int generation, long lastCommittedOffset,
