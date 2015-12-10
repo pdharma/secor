@@ -60,6 +60,9 @@ public class LogFilePath {
         put("iplocationqueue", "ip-location-event");
         put("latlonglocationqueue", "latlong-location-event");
         put("poilocationqueue", "poi-location-event");
+        put("iplocnodatequeue ", "ip-location-no-date-event");
+        put("latlonglocnodatequeue", "latlong-location-no-date-event");
+        put("poilocnodatequeue", "poi-location-no-date-event");
     }};
 
     public LogFilePath(String prefix, int generation, long lastCommittedOffset,
