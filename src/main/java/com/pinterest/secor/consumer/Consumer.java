@@ -27,6 +27,7 @@ import com.pinterest.secor.uploader.UploadManager;
 import com.pinterest.secor.reader.MessageReader;
 import com.pinterest.secor.util.ReflectionUtil;
 import com.pinterest.secor.writer.MessageWriter;
+import com.pinterest.secor.util.PGStatsClient;
 
 import kafka.consumer.ConsumerTimeoutException;
 
@@ -59,6 +60,7 @@ public class Consumer extends Thread {
     // TODO(pawel): we should keep a count per topic partition.
     private double mUnparsableMessages;
     private int consecutiveFailures;
+    private PGStatsClient statsClient;
 
     public Consumer(SecorConfig config) {
         mConfig = config;
