@@ -63,6 +63,7 @@ public class LogFilePath {
         put("iplocnodatequeue", "ip-location-no-date-event");
         put("latlonglocnodatequeue", "latlong-location-no-date-event");
         put("poilocnodatequeue", "poi-location-no-date-event");
+        put("mediation-ads-csv", "mediation-ads-csv");
     }};
 
     public LogFilePath(String prefix, int generation, long lastCommittedOffset,
