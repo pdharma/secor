@@ -57,6 +57,12 @@ public class LogFilePath {
         put("tageventqueue", "tag-event");
         put("usersessioneventqueue", "fact-event");
         put("locationeventqueue", "location-event");
+        put("iplocationqueue", "ip-location-event");
+        put("latlonglocationqueue", "latlong-location-event");
+        put("poilocationqueue", "poi-location-event");
+        put("iplocnodatequeue", "ip-location-no-date-event");
+        put("latlonglocnodatequeue", "latlong-location-no-date-event");
+        put("poilocnodatequeue", "poi-location-no-date-event");
     }};
 
     public LogFilePath(String prefix, int generation, long lastCommittedOffset,
@@ -136,7 +142,11 @@ public class LogFilePath {
             elements.add(topicNameTranslations.get(mTopic));    
         }
         else{
+<<<<<<< HEAD
             elements.add(topicNameTranslations.get(mTopic));       
+=======
+            elements.add(mTopic);       
+>>>>>>> 3f81259a01a855cce472fb147cf133310352f4c8
         }
         
         return StringUtils.join(elements, "/");
