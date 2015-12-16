@@ -142,11 +142,8 @@ public class LogFilePath {
             elements.add(topicNameTranslations.get(mTopic));    
         }
         else{
-<<<<<<< HEAD
-            elements.add(topicNameTranslations.get(mTopic));       
-=======
-            elements.add(mTopic);       
->>>>>>> 3f81259a01a855cce472fb147cf133310352f4c8
+            elements.add(topicNameTranslations.get(mTopic));      
+        
         }
         
         return StringUtils.join(elements, "/");
